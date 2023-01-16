@@ -15,13 +15,37 @@ router.post("/", async (req, res) => {
     res.json({message : "your request has been added"});
 })
 
-module.exports = router;
 
 router.get('/count/:id', async (req, res) => {
     const mail = req.params.id;
     const count = await dash.count({ where :{
         userEmail : mail
-    }, 
+    }
     })
     res.json({count : `${count}`})
 })
+
+
+router.get("/item/:id",async (req, res) => {
+    const mail = req.params.id;
+    const items = await dash.findAll({
+        where:{
+            userEmail : mail,
+        }
+    })
+    res.json(items)
+})
+
+router.delete("/delete/:Id", async (req, res) => {
+    const itemId = req.params.Id;
+  
+    await dash.destroy({
+      where: {
+        id: itemId ,
+      },
+    });
+  
+    res.json("DELETED SUCCESSFULLY");
+});
+
+module.exports = router;

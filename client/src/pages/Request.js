@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 const Request = () => {
     const [User, setUser] = useState({});
+    const [items, setItems] = useState([]);
     useEffect(() => {
         axios.get("/reg/auth", {
           headers: {
@@ -12,11 +13,29 @@ const Request = () => {
           setUser(response.data);
         });
     }, []);
+    
+    useEffect(() =>{
+      axios.get(`/dash/item/${User.mail}`).then((response) => {
+        setItems(response.data);
+      })
+
+    }, [User.mail])
 
     const [itemName, setItemName] = useState('');
     const [number, setNumber] = useState('');
     const [msg, setMsg] = useState('');
     
+    const deleteItem = (id) =>{
+      axios.delete(`/dash/delete/${id}`)
+      .then((response) => {
+        setItems(
+          items.filter((val) => {
+            return val.id != id;
+          })
+        )
+      })
+    }
+
 
     const Request = () =>{
         axios.post('/dash', {
@@ -32,7 +51,7 @@ const Request = () => {
     }
   return (
     <div style={{padding:'10px 300px 300px'}}>
-    <form style = {{padding :'10px 250px 250px', background:'yellow', borderRadius:'20px'}}>
+    <form className="justify-content-center align-items-center" style = {{padding :'10px 250px 20px', background:'lightblue', borderRadius:'20px'}}>
         <h3>Make Request</h3>
         <div className="form-group">
           <label>Item Name</label>
@@ -40,7 +59,8 @@ const Request = () => {
         </div>
         <div className="form-group">
           <label>No of Items</label>
-          <select value={1} onChange={(e) => {setNumber(e.target.value)}} className="form-control">
+          <select onChange={(e) => {setNumber(e.target.value)}} className="form-control">
+            <option>0</option>
             <option>1</option>
             <option>2</option>
             <option>3</option>
@@ -48,9 +68,25 @@ const Request = () => {
             <option>5</option>
           </select>
         </div>
-        <button onClick={Request} style={{marginTop : '50px'}} type="button" class="btn btn-dark">Add</button>
+        <button onClick={Request} style={{marginTop : '50px'}} type="button" className="btn btn-dark">Add</button>
         <p id="msg"></p>
     </form>
+    
+    {
+      items.map((value) =>{
+        return(
+          <div className="card">
+            <div className="card-header">
+              Item
+            </div>
+          <div className="card-body">
+            <h6 className="card-title">{value.newRequest}</h6>
+            <button onClick={() => deleteItem(value.id)} className="btn btn-primary">Delete</button>
+          </div>
+        </div>
+        )
+      })
+    }
   </div>
   );
 };

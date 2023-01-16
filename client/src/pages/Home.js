@@ -14,7 +14,7 @@ const Home = () => {
   const token = localStorage.getItem("userToken");
   // const data = decode(token);
   
-  const [count, setCount] = useState({});
+  const [count, setCount] = useState();
 
   useEffect(() => {
     axios.get("/reg/auth", {
@@ -23,14 +23,19 @@ const Home = () => {
       },
     }).then((response) => {
       setUser(response.data);
-    });
+    })
+
   }, []);
 
 
-  axios.get(`/dash/count/${User.mail}`)
+  useEffect(() => {
+    axios.get(`/dash/count/${User.mail}`)
     .then((response) => {
-      setCount(response.data)
-  },{})
+      setCount(response.data.count)
+    })
+  }, [count])
+  // we use this second parameter when a component mounts or only when a resource changes
+  
 
   const logOut = () => {
     localStorage.removeItem("userToken");
@@ -56,8 +61,7 @@ const Home = () => {
                   </div>
                   <div className="w3-col s8 w3-bar">
                     <span>Welcome, <strong>{User.mail}</strong></span><br />
-                    <div className="w3-bar-item w3-button"><i className="fa fa-envelope" /></div>
-                    <div className="w3-bar-item w3-button"><i className="fa fa-user" /></div>
+                    
                   </div>
                 </div>
                 <hr />
@@ -69,7 +73,7 @@ const Home = () => {
                   <a href="#pricing" className="w3-bar-item w3-button w3-padding"><i className="fa fa-users fa-fw" />&nbsp; Pricing</a>
                   <a href="#aboutUs" className="w3-bar-item w3-button w3-padding"><i className="fa fa-bullseye fa-fw" />&nbsp; About us</a>
                   <a href="#details" className="w3-bar-item w3-button w3-padding"><i className="fa fa-cog fa-fw" />&nbsp; Details</a><br /><br />
-                  <Link to={'/Request'} style={{width:'20px'}}><button type="button" class="btn btn-dark">+ Add Request</button></Link>
+                  <Link to={'/Request'} style={{width:'20px'}}><button type="button" className="btn btn-dark">+ Add Request</button></Link>
                 </div>
               </nav>
 
@@ -80,16 +84,18 @@ const Home = () => {
           <h5><b><i className="fa fa-dashboard" /> My Dashboard</b></h5>
         </header>
         <div id="requestStatus" className="w3-row-padding w3-margin-bottom">
+          <Link to={'/Requests'}>
           <div className="w3-quarter">
             <div className="w3-container w3-red w3-padding-16">
               <div className="w3-left"><i className="fas fa-sad-tear w3-xxxlarge" /></div>
               <div className="w3-right">
-                <h3>0</h3>
+                <h3>{count}</h3>
               </div>
               <div className="w3-clear" />
-              <h4>New Request</h4>
+              <h4>Requests</h4>
             </div>
           </div>
+          </Link>
           <div className="w3-quarter">
             <div className="w3-container w3-blue w3-padding-16">
               <div className="w3-left"><i className="fas fa-meh w3-xxxlarge" /></div>

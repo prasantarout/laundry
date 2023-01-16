@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Details from "./pages/Details";
@@ -12,7 +12,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/Login" exact element={<Login />} />
+          <Route path="/" exact element={<Login />} />
           <Route path="/register" exact element={<Register />} />
           <Route path="/Home"  element={<Home />} />
           <Route path = "/Details/byId/:id"  element = {<Details/>} />
