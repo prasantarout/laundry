@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from 'react'
-
+import { Link, useNavigate } from 'react-router-dom';
 const Request = () => {
     const [User, setUser] = useState({});
     const [items, setItems] = useState([]);
+    let navigate = useNavigate();
     useEffect(() => {
         axios.get("/reg/auth", {
           headers: {
@@ -47,7 +48,9 @@ const Request = () => {
         document.getElementById("msg").innerHTML = msg;
         setTimeout(() => {
         document.getElementById("msg").innerHTML = "";
-        }, 2000);
+       
+        },5000);
+         navigate("/Home")
     }
   return (
     <div style={{padding:'10px 300px 300px'}}>

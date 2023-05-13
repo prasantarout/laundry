@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-
+import { Link, useNavigate } from 'react-router-dom';
 const Register = () => {
   const [Name, setName] = useState('');
   const [Email, setEmail] = useState('');
   const [Phone, setPhone] = useState('');
   const [Password, setPassword] = useState('');
+  let navigate = useNavigate();
 
   const Register = () => {
     axios.post('/reg', {
@@ -15,6 +16,12 @@ const Register = () => {
       userPassword : Password
     }).then((response) => {
       console.log(response.data.message);
+      if(response.data.error){
+        alert(response.data.error);
+      } else{
+       // localStorage.setItem("userToken", response.data);
+        navigate("/")
+      }
     })
   }
 

@@ -39,7 +39,7 @@ const Home = () => {
 
   const logOut = () => {
     localStorage.removeItem("userToken");
-    Navigate("/Login");
+    Navigate("/");
   }
 
   return (
