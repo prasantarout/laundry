@@ -43,6 +43,46 @@ router.post('/', async (req, res) => {
     }
 });
 
+ router.put("/update/id", async (req, res) => {
+    if (req.body.userId === req.params.id) {
+      if (req.body.password) {
+        const salt = await bcrypt.genSalt(10);
+        req.body.password = await bcrypt.hash(req.body.password, salt);
+      }
+      try {
+        const updatedUser = await user2.findByIdAndUpdate(
+          req.params.id,
+          {
+            $set: req.body,
+          },
+          { new: true }
+        );
+        res.status(200).json(updatedUser);
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    } else {
+      res.status(401).json("You can update only your account!");
+    }
+  });
+
+//   router.post('/changepassword', function (req, res) {
+//     user2.findByUsername(req.body.UserName, (err, user) => {
+//         if (err) {
+//             res.send(err);
+//         } else {
+//             user2.changePassword(req.body.userPassword, 
+//             req.body.newpassword, function (err) {
+//                 if (err) {
+//                     res.send(err);
+//                 } else {
+//                     res.send('successfully change password')
+//                 }
+//             });
+//         }
+//     });
+//  });
+
 router.post('/login',async (req, res) => {
     const {userEmail, userPassword} = req.body;
     const user = await user2.findOne({ where: { userEmail: userEmail} })

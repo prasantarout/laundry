@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Request from "./pages/Request";
 import Requests from "./pages/Requests";
+import ForgetPassword from "./pages/ForgetPassword";
 function App() {
   return (
     <div className="App">
@@ -18,6 +19,7 @@ function App() {
           <Route path = "/Details/byId/:id"  element = {<Details/>} />
           <Route path="/Request" element = {<Request/>} />
           <Route path="/Requests" element = {<Requests/>} />
+          <Route path="/ForgetPassword" element = {<ForgetPassword/>} />
         </Routes>
       </Router>
     </div>
